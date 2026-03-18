@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NeoClouds - Premium Tech Store</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.min.css">
+</head>
+<body>
+  <!-- Loading Screen -->
+  <div id="loading-screen">
+    <div class="loader">
+      <div class="loader-ring"></div>
+      <div class="loader-text">NoraClouds</div>
+    </div>
+  </div>
+
+  <!-- Notification Toast -->
+  <div id="toast-container"></div>
+
+  <!-- Sticky Header -->
+  <header class="header" id="header">
+    <div class="header-top">
+      <div class="container">
+        <div class="header-top-content">
+          <p><i class="fas fa-truck"></i> Free Shipping on Orders Over $500 | <span class="flash-text">Flash Sale Ends Soon!</span></p>
+          <div class="header-top-right">
+            <select id="language-select">
+              <option value="en">English</option>
+              <option value="es">Español</option>
+              <option value="fr">Français</option>
+              <option value="de">Deutsch</option>
+            </select>
+            <select id="currency-select">
+              <option value="USD">USD $</option>
+              <option value="EUR">EUR €</option>
+              <option value="GBP">GBP £</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="header-main">
+      <div class="container">
+        <div class="header-content">
+          <div class="logo" data-aos="fade-right">
+            <span class="logo-icon"><i class="fas fa-cloud"></i></span>
+            <span class="logo-text">NoraClouds</span>
+          </div>
+          
+          <nav class="nav-menu" id="nav-menu">
+            <a href="#" class="nav-link active" data-category="all">All Products</a>
+            <a href="#" class="nav-link" data-category="phone">iPhones</a>
+            <a href="#" class="nav-link" data-category="laptop">MacBooks</a>
+            <a href="#" class="nav-link" data-category="watch">Watches</a>
+            <a href="#" class="nav-link" data-category="audio">Audio</a>
+            <a href="#" class="nav-link" data-category="accessories">Accessories</a>
+          </nav>
+          
+          <div class="header-actions">
+            <!-- Search Bar -->
+            <div class="search-container" data-aos="fade-down">
+              <div class="search-box">
+                <input type="text" id="search-input" placeholder="Search products..." autocomplete="off">
+                <button id="search-btn"><i class="fas fa-search"></i></button>
+              </div>
+              <div class="search-results" id="search-results"></div>
+            </div>
+            
+            <!-- User Actions -->
+            <div class="user-actions">
+              <button class="action-btn" id="wishlist-btn" data-aos="fade-down">
+                <i class="fas fa-heart"></i>
+                <span class="badge" id="wishlist-count">0</span>
+              </button>
+              <button class="action-btn" id="compare-btn" data-aos="fade-down">
+                <i class="fas fa-balance-scale"></i>
+                <span class="badge" id="compare-count">0</span>
+              </button>
+              <button class="action-btn" id="cart-btn" data-aos="fade-down">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="badge" id="cart-count">0</span>
+              </button>
+              <button class="action-btn dark-mode-btn" id="dark-mode-toggle" data-aos="fade-down">
+                <i class="fas fa-moon"></i>
+              </button>
+            </div>
+            
+            <button class="hamburger" id="hamburger">
+              <span></span>
+              <span></span>
+              <span></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <div class="hero-background">
+      <div class="hero-particles" id="particles"></div>
+      <div class="hero-gradient"></div>
+    </div>
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-text" data-aos="fade-up" data-aos-delay="100">
+          <span class="hero-badge"><i class="fas fa-bolt"></i> New Collection 2025</span>
+          <h1>Experience the <span class="gradient-text">Future of Tech</span></h1>
+          <p>Discover premium Apple products and cutting-edge technology. Free shipping, easy returns, and exclusive deals await you.</p>
+          <div class="hero-buttons">
+            <a href="#products" class="btn btn-primary"><i class="fas fa-shopping-bag"></i> Shop Now</a>
+            <a href="#categories" class="btn btn-secondary"><i class="fas fa-compass"></i> Explore</a>
+          </div>
+          <div class="hero-stats">
+            <div class="stat">
+              <span class="stat-number" data-count="50000">0</span>
+              <span class="stat-label">Happy Customers</span>
+            </div>
+            <div class="stat">
+              <span class="stat-number" data-count="500">0</span>
+              <span class="stat-label">Products</span>
+            </div>
+            <div class="stat">
+              <span class="stat-number" data-count="99">0</span>
+              <span class="stat-label">% Satisfaction</span>
+            </div>
+          </div>
+        </div>
+        <div class="hero-visual" data-aos="fade-left" data-aos-delay="300">
+          <div class="hero-product">
+            <img src="IMG/iphone16.jpg" alt="Featured Product">
+            <div class="product-float-card">
+              <i class="fas fa-star"></i>
+              <span>Best Seller</span>
+            </div>
+          </div>
+          <div class="hero-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Flash Sale Section -->
+  <section class="flash-sale" id="flash-sale">
+    <div class="container">
+      <div class="flash-sale-banner" data-aos="flip-up">
+        <div class="flash-sale-content">
+          <div class="flash-icon">
+            <i class="fas fa-bolt"></i>
+          </div>
+          <div class="flash-text">
+            <h2>⚡ Flash Sale - Up to 30% OFF!</h2>
+            <p>Limited time offer. Don't miss out on these incredible deals.</p>
+          </div>
+          <div class="countdown" id="countdown">
+            <div class="countdown-item">
+              <span class="countdown-number" id="hours">00</span>
+              <span class="countdown-label">Hours</span>
+            </div>
+            <div class="countdown-separator">:</div>
+            <div class="countdown-item">
+              <span class="countdown-number" id="minutes">00</span>
+              <span class="countdown-label">Minutes</span>
+            </div>
+            <div class="countdown-separator">:</div>
+            <div class="countdown-item">
+              <span class="countdown-number" id="seconds">00</span>
+              <span class="countdown-label">Seconds</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flash-products" id="flash-products">
+        <!-- Flash sale products will be loaded here -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Categories Section -->
+  <section class="categories" id="categories">
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <span class="section-tag">Browse Categories</span>
+        <h2>Shop by Category</h2>
+        <p>Find exactly what you're looking for</p>
+      </div>
+      <div class="category-grid">
+        <div class="category-card" data-category="phone" data-aos="fade-up" data-aos-delay="100">
+          <div class="category-icon">
+            <i class="fas fa-mobile-alt"></i>
+          </div>
+          <h3>iPhones</h3>
+          <p>150+ Products</p>
+          <span class="category-arrow"><i class="fas fa-arrow-right"></i></span>
+        </div>
+        <div class="category-card" data-category="laptop" data-aos="fade-up" data-aos-delay="200">
+          <div class="category-icon">
+            <i class="fas fa-laptop"></i>
+          </div>
+          <h3>MacBooks</h3>
+          <p>50+ Products</p>
+          <span class="category-arrow"><i class="fas fa-arrow-right"></i></span>
+        </div>
+        <div class="category-card" data-category="watch" data-aos="fade-up" data-aos-delay="300">
+          <div class="category-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <h3>Watches</h3>
+          <p>80+ Products</p>
+          <span class="category-arrow"><i class="fas fa-arrow-right"></i></span>
+        </div>
+        <div class="category-card" data-category="audio" data-aos="fade-up" data-aos-delay="400">
+          <div class="category-icon">
+            <i class="fas fa-headphones"></i>
+          </div>
+          <h3>Audio</h3>
+          <p>100+ Products</p>
+          <span class="category-arrow"><i class="fas fa-arrow-right"></i></span>
+        </div>
+        <div class="category-card" data-category="tablet" data-aos="fade-up" data-aos-delay="500">
+          <div class="category-icon">
+            <i class="fas fa-tablet-alt"></i>
+          </div>
+          <h3>iPads</h3>
+          <p>40+ Products</p>
+          <span class="category-arrow"><i class="fas fa-arrow-right"></i></span>
+        </div>
+        <div class="category-card" data-category="accessories" data-aos="fade-up" data-aos-delay="600">
+          <div class="category-icon">
+            <i class="fas fa-headset"></i>
+          </div>
+          <h3>Accessories</h3>
+          <p>200+ Products</p>
+          <span class="category-arrow"><i class="fas fa-arrow-right"></i></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Products Section -->
+  <section class="products" id="products">
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <span class="section-tag">Our Products</span>
+        <h2>Featured Products</h2>
+        <p>Handpicked for you</p>
+      </div>
+      
+      <!-- Filter & Sort -->
+      <div class="products-toolbar">
+        <div class="filter-buttons">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="new">New Arrivals</button>
+          <button class="filter-btn" data-filter="sale">On Sale</button>
+          <button class="filter-btn" data-filter="trending">Trending</button>
+        </div>
+        <div class="sort-options">
+          <select id="sort-select">
+            <option value="default">Sort by: Default</option>
+            <option value="price-low">Price: Low to High</option>
+            <option value="price-high">Price: High to Low</option>
+            <option value="name">Name: A-Z</option>
+            <option value="rating">Rating: High to Low</option>
+          </select>
+        </div>
+      </div>
+      
+      <!-- Products Grid -->
+      <div class="products-grid" id="products-grid">
+        <!-- Products will be loaded here via JavaScript -->
+      </div>
+      
+      <div class="load-more-container">
+        <button class="btn btn-load-more" id="load-more-btn">
+          <i class="fas fa-plus"></i> Load More Products
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Compare Modal -->
+  <div class="modal compare-modal" id="compare-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fas fa-balance-scale"></i> Compare Products</h3>
+        <button class="modal-close" id="compare-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="compare-products" id="compare-products">
+          <!-- Compare items will be loaded here -->
+        </div>
+        <div class="compare-empty" id="compare-empty">
+          <i class="fas fa-balance-scale"></i>
+          <p>No products to compare. Add products to compare!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cart Sidebar -->
+  <div class="cart-sidebar" id="cart-sidebar">
+    <div class="cart-header">
+      <h3><i class="fas fa-shopping-cart"></i> Your Cart</h3>
+      <button class="cart-close" id="cart-close">&times;</button>
+    </div>
+    <div class="cart-items" id="cart-items">
+      <!-- Cart items will be loaded here -->
+    </div>
+    <div class="cart-empty" id="cart-empty">
+      <i class="fas fa-shopping-bag"></i>
+      <p>Your cart is empty</p>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Total:</span>
+        <span id="cart-total-price">$0.00</span>
+      </div>
+      <div class="cart-actions">
+        <button class="btn btn-primary btn-block" id="checkout-btn">
+          <i class="fas fa-credit-card"></i> Proceed to Checkout
+        </button>
+        <button class="btn btn-secondary btn-block" id="clear-cart-btn">
+          <i class="fas fa-trash"></i> Clear Cart
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="cart-overlay" id="cart-overlay"></div>
+
+  <!-- Wishlist Sidebar -->
+  <div class="wishlist-sidebar" id="wishlist-sidebar">
+    <div class="wishlist-header">
+      <h3><i class="fas fa-heart"></i> Wishlist</h3>
+      <button class="wishlist-close" id="wishlist-close">&times;</button>
+    </div>
+    <div class="wishlist-items" id="wishlist-items">
+      <!-- Wishlist items will be loaded here -->
+    </div>
+    <div class="wishlist-empty" id="wishlist-empty">
+      <i class="fas fa-heart"></i>
+      <p>Your wishlist is empty</p>
+    </div>
+  </div>
+  <div class="wishlist-overlay" id="wishlist-overlay"></div>
+
+  <!-- Quick View Modal -->
+  <div class="modal quick-view-modal" id="quick-view-modal">
+    <div class="modal-content quick-view-content">
+      <button class="modal-close" id="quick-view-close">&times;</button>
+      <div class="quick-view-body" id="quick-view-body">
+        <!-- Quick view content will be loaded here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Newsletter Section -->
+  <section class="newsletter" id="newsletter">
+    <div class="container">
+      <div class="newsletter-content" data-aos="zoom-in">
+        <div class="newsletter-text">
+          <h2><i class="fas fa-paper-plane"></i> Subscribe to Our Newsletter</h2>
+          <p>Get exclusive deals, new product alerts, and 10% off your first order!</p>
+        </div>
+        <form class="newsletter-form" id="newsletter-form">
+          <div class="input-group">
+            <input type="email" placeholder="Enter your email address" required>
+            <button type="submit" class="btn btn-primary">Subscribe</button>
+          </div>
+          <p class="newsletter-disclaimer">By subscribing, you agree to our Privacy Policy and Terms of Service.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="features-grid">
+        <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+          <div class="feature-icon">
+            <i class="fas fa-shipping-fast"></i>
+          </div>
+          <h3>Free Shipping</h3>
+          <p>On orders over $500</p>
+        </div>
+        <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="feature-icon">
+            <i class="fas fa-undo"></i>
+          </div>
+          <h3>Easy Returns</h3>
+          <p>30-day return policy</p>
+        </div>
+        <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+          <div class="feature-icon">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <h3>Secure Payment</h3>
+          <p>100% secure checkout</p>
+        </div>
+        <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
+          <div class="feature-icon">
+            <i class="fas fa-headset"></i>
+          </div>
+          <h3>24/7 Support</h3>
+          <p>Dedicated support team</p>
+        </div>
+        <div class="feature-card" data-aos="fade-up" data-aos-delay="500">
+          <div class="feature-icon">
+            <i class="fas fa-gift"></i>
+          </div>
+          <h3>Gift Cards</h3>
+          <p>Perfect for any occasion</p>
+        </div>
+        <div class="feature-card" data-aos="fade-up" data-aos-delay="600">
+          <div class="feature-icon">
+            <i class="fas fa-certificate"></i>
+          </div>
+          <h3>Quality Guarantee</h3>
+          <p>Official Apple reseller</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI Recommendations Section -->
+  <section class="recommendations" id="recommendations">
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <span class="section-tag">AI-Powered</span>
+        <h2>Recommended For You</h2>
+        <p>Based on your browsing history and preferences</p>
+      </div>
+      <div class="recommendations-grid" id="recommendations-grid">
+        <!-- AI recommendations will be loaded here -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section class="testimonials" id="testimonials">
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <span class="section-tag">Testimonials</span>
+        <h2>What Our Customers Say</h2>
+        <p>Join thousands of satisfied customers</p>
+      </div>
+      <div class="testimonials-grid">
+        <div class="testimonial-card" data-aos="fade-up" data-aos-delay="100">
+          <div class="testimonial-rating">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+          </div>
+          <p>"Amazing shopping experience! The website is beautiful and easy to navigate. Fast shipping too!"</p>
+          <div class="testimonial-author">
+            <img src="IMG/img5.jpg" alt="Customer">
+            <div>
+              <h4>Sarah Johnson</h4>
+              <span>Verified Buyer</span>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="testimonial-rating">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+          </div>
+          <p>"Best prices I've found anywhere. The customer support team is incredibly helpful!"</p>
+          <div class="testimonial-author">
+            <img src="IMG/img6 (3).jpg" alt="Customer">
+            <div>
+              <h4>Michael Chen</h4>
+              <span>Verified Buyer</span>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card" data-aos="fade-up" data-aos-delay="300">
+          <div class="testimonial-rating">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star-half-alt"></i>
+          </div>
+          <p>"Love the AI recommendations! Found exactly what I was looking for. Will definitely order again!"</p>
+          <div class="testimonial-author">
+            <img src="IMG/arab-company-professional-thinking-about-start-up-project-development.jpg" alt="Customer">
+            <div>
+              <h4>Emily Davis</h4>
+              <span>Verified Buyer</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Order Tracking Section -->
+  <section class="order-tracking" id="order-tracking">
+    <div class="container">
+      <div class="tracking-content" data-aos="fade-up">
+        <div class="tracking-text">
+          <h2><i class="fas fa-map-marker-alt"></i> Track Your Order</h2>
+          <p>Enter your order number to see the status of your delivery</p>
+        </div>
+        <form class="tracking-form" id="tracking-form">
+          <input type="text" placeholder="Enter order number" required>
+          <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Track</button>
+        </form>
+        <div class="tracking-result" id="tracking-result">
+          <!-- Tracking result will be shown here -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer" id="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="footer-logo">
+            <span class="logo-icon"><i class="fas fa-cloud"></i></span>
+            <span class="logo-text">NoraClouds</span>
+          </div>
+          <p>Your trusted destination for premium Apple products and cutting-edge technology.</p>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">FAQs</a></li>
+            <li><a href="#">Shipping Info</a></li>
+            <li><a href="#">Returns</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Categories</h4>
+          <ul>
+            <li><a href="#">iPhones</a></li>
+            <li><a href="#">MacBooks</a></li>
+            <li><a href="#">Apple Watch</a></li>
+            <li><a href="#">AirPods</a></li>
+            <li><a href="#">Accessories</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact Us</h4>
+          <ul class="contact-info">
+            <li><i class="fas fa-map-marker-alt"></i> 123 Tech Street, Silicon Valley, CA</li>
+            <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
+            <li><i class="fas fa-envelope"></i> support@noraclouds.com</li>
+            <li><i class="fas fa-clock"></i> Mon - Fri: 9AM - 9PM</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 NoraClouds. All rights reserved. | Designed with <i class="fas fa-heart"></i> by NoraClouds Team</p>
+        <div class="payment-methods">
+          <i class="fab fa-cc-visa"></i>
+          <i class="fab fa-cc-mastercard"></i>
+          <i class="fab fa-cc-amex"></i>
+          <i class="fab fa-cc-paypal"></i>
+          <i class="fab fa-apple-pay"></i>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scroll to Top Button -->
+  <button class="scroll-top" id="scroll-top">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <!-- Live Chat Widget -->
+  <div class="chat-widget" id="chat-widget">
+    <button class="chat-toggle" id="chat-toggle">
+      <i class="fas fa-comments"></i>
+    </button>
+    <div class="chat-box" id="chat-box">
+      <div class="chat-header">
+        <h4><i class="fas fa-headset"></i> Live Chat</h4>
+        <button class="chat-close" id="chat-close">&times;</button>
+      </div>
+      <div class="chat-messages" id="chat-messages">
+        <div class="chat-message bot">
+          <p>Hello! 👋 Welcome to NoraClouds! How can I help you today?</p>
+        </div>
+      </div>
+      <form class="chat-input" id="chat-form">
+        <input type="text" placeholder="Type your message...">
+        <button type="submit"><i class="fas fa-paper-plane"></i></button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Confetti Canvas -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.min.js"></script>
+  <script src="productsStorage.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
+
