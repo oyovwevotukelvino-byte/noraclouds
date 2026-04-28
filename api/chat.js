@@ -1,10 +1,4 @@
-const { GoogleGenAI } = require('@google/genai');
-
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
-
 module.exports = async function handler(req, res) {
-  // Allow CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -17,25 +11,37 @@ module.exports = async function handler(req, res) {
 
     if (!message) return res.status(400).json({ error: 'Message is required' });
 
-    const formattedHistory = history.map(msg => ({
-      role: msg.role === 'assistant' ? 'model' : msg.role,
-      parts: [{ text: msg.content || msg.parts?.[0]?.text || '' }]
-    }));
+    const messages = [
+      { role: 'system', content: systemInstruction || 'You are NoraBot, a helpful shopping assistant.' },
+      ...history.map(msg => ({ role: msg.role === 'assistant' ? 'assistant' : 'user', content: msg.content })),
+      { role: 'user', content: message }
+    ];
 
-    const chat = ai.chats.create({
-      model: 'gemini-2.0-flash-lite',
-      history: formattedHistory,
-      config: {
-        systemInstruction: systemInstruction || 'You are NoraBot, a helpful shopping assistant.'
-      }
+    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${process.env.GROQ_API_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: 'llama3-8b-8192',
+        messages: messages,
+        max_tokens: 1000
+      })
     });
 
-    const response = await chat.sendMessage({ message });
+    const data = await response.json();
 
-    res.json({ success: true, response: response.text, model: 'gemini-2.0-flash' });
+    if (!response.ok) {
+      throw new Error(data.error?.message || 'Groq API error');
+    }
+
+    const aiReply = data.choices[0].message.content;
+
+    res.json({ success: true, response: aiReply, model: 'llama3-8b-8192' });
 
   } catch (error) {
-    console.error('Gemini API Error:', error);
+    console.error('Groq API Error:', error);
     res.status(500).json({ success: false, error: error.message });
   }
 };
