@@ -3,7 +3,7 @@ const { GoogleGenAI } = require('@google/genai');
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   // Allow CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -38,4 +38,4 @@ export default async function handler(req, res) {
     console.error('Gemini API Error:', error);
     res.status(500).json({ success: false, error: error.message });
   }
-}
+};

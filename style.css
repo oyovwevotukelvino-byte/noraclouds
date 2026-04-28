@@ -2201,7 +2201,7 @@ input, textarea, select {
   left: 0;
   width: 380px;
   max-width: calc(100vw - 60px);
-  max-height: calc(100vh - 120px);
+  height: 500px;        /* fixed height instead of max-height */
   background: var(--bg-primary);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-xl);
@@ -2237,15 +2237,15 @@ input, textarea, select {
 
 .chat-messages {
   flex: 1;
-  min-height: 150px;
-  max-height: calc(100vh - 250px);
-  overflow-y: auto;
+  overflow-y: auto;     /* this enables scrolling */
   padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 15px;
   scroll-behavior: smooth;
+  min-height: 0;        /* critical fix - without this, flexbox won't scroll */
 }
+
 
 .chat-message {
   max-width: 80%;
