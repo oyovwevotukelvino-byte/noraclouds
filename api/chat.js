@@ -23,7 +23,7 @@ module.exports = async function handler(req, res) {
     }));
 
     const chat = ai.chats.create({
-      model: 'gemini-2.0-flash',
+      model: 'gemini-1.5-flash',
       history: formattedHistory,
       config: {
         systemInstruction: systemInstruction || 'You are NoraBot, a helpful shopping assistant.'
