@@ -123,6 +123,9 @@ function initApp() {
   state.products = storage.getAll();
   state.filteredProducts = [...state.products];
   
+  // Load chat history
+  state.chatHistory = JSON.parse(localStorage.getItem('neoclouds_chat_history')) || [];
+  
   // Apply dark mode if enabled
   if (state.darkMode) {
     document.body.setAttribute('data-theme', 'dark');
@@ -131,6 +134,9 @@ function initApp() {
   // Hide loading screen
   setTimeout(() => {
     elements.loadingScreen.classList.add('hidden');
+    
+    // Load previous chat messages after DOM ready
+    loadChatHistory();
   }, 1500);
   
   // Initialize all features
@@ -465,9 +471,17 @@ function initEventListeners() {
   elements.trackingForm.addEventListener('submit', handleOrderTracking);
   
   // Chat Widget
-  elements.chatToggle.addEventListener('click', toggleChat);
-  elements.chatClose.addEventListener('click', toggleChat);
-  elements.chatForm.addEventListener('submit', handleChatSubmit);
+    elements.chatToggle.addEventListener('click', toggleChat);
+    elements.chatClose.addEventListener('click', toggleChat);
+    elements.chatForm.addEventListener('submit', handleChatSubmit);
+    
+    // Add clear chat button to header
+    const clearBtn = document.createElement('button');
+    clearBtn.innerHTML = '<i class="fas fa-trash"></i>';
+    clearBtn.className = 'chat-clear-btn';
+    clearBtn.title = 'Clear chat history';
+    clearBtn.onclick = clearChatHistory;
+    elements.chatBox.querySelector('.chat-header').appendChild(clearBtn);
   
   // Product delegation
   elements.productsGrid.addEventListener('click', handleProductAction);
@@ -960,44 +974,176 @@ function handleOrderTracking(e) {
 }
 
 // ================================================
-// Chat Widget
+// Chat Widget - Gemini AI Integration
 // ================================================
-function toggleChat() {
-  elements.chatBox.classList.toggle('active');
-}
 
-function handleChatSubmit(e) {
-  e.preventDefault();
-  const input = e.target.querySelector('input');
-  const message = input.value.trim();
-  
-  if (!message) return;
-  
-  // Add user message
-  addChatMessage(message, 'user');
-  input.value = '';
-  
-  // Simulate bot response
-  setTimeout(() => {
-    const responses = [
-      "I'd be happy to help you with that!",
-      "Let me check that for you...",
-      "Great question! Here's what I found:",
-      "Is there anything else you'd like to know?",
-      "Our team is here to assist you 24/7!"
-    ];
-    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-    addChatMessage(randomResponse, 'bot');
-  }, 1000);
-}
+// API Configuration - Local backend
+// API Configuration
+const API_CONFIG = {
+  url: '/api/chat'
+};
+// NoraClouds System Prompt for Gemini
+const SYSTEM_PROMPT = `You are NoraBot, the friendly and knowledgeable AI shopping assistant for NoraClouds — a premium Apple technology e-commerce store.
 
-function addChatMessage(message, type) {
-  const messageDiv = document.createElement('div');
-  messageDiv.className = `chat-message ${type}`;
-  messageDiv.innerHTML = `<p>${message}</p>`;
-  elements.chatMessages.appendChild(messageDiv);
-  elements.chatMessages.scrollTop = elements.chatMessages.scrollHeight;
-}
+STORE INFORMATION:
+- Name: NoraClouds
+- Specialty: Premium Apple products and cutting-edge technology
+- Product Categories: iPhones, MacBooks, Apple Watches, AirPods, iPads, and Accessories
+- Key Features: Free shipping on orders over $500, 30-day return policy, 24/7 customer support, flash sales with up to 30% off
+- Popular Products: iPhone 16 Pro Max ($1,400), MacBook Pro M3 ($1,999), AirPods Pro ($249), Apple Watch Ultra 2 ($799), Vision Pro ($3,499)
+
+YOUR PERSONALITY & GUIDELINES:
+- Be warm, enthusiastic, and conversational — greet customers like a friendly tech expert
+- Guide users on how to use the NoraClouds website and app
+- Recommend products based on customer needs and budget
+- Answer questions about product specs, pricing, availability, shipping, and returns
+- Suggest relevant upsells and cross-sells naturally
+- If a product is on flash sale, mention the discount excitedly
+- Always end responses with an engaging question to continue the conversation
+- Keep responses concise but helpful (2-4 sentences max when possible)
+- Use emojis sparingly to add personality ✨
+- If you don't know something specific, offer to connect them with human support
+
+Current date: ${new Date().toLocaleDateString()}.`
+    
+    function saveChatHistory() {
+      localStorage.setItem('noraclouds_chat_history', JSON.stringify(state.chatHistory.slice(-4))); // Keep last 20 exchanges
+    }
+    
+    function clearChatHistory() {
+      state.chatHistory = [];
+      saveChatHistory();
+      elements.chatMessages.innerHTML = `
+        <div class="chat-message bot">
+          <p>Hello! 👋 Welcome back to NoraClouds! How can I help you today?</p>
+        </div>
+      `;
+      showToast('Chat history cleared!', 'info');
+    }
+    
+    function loadChatHistory() {
+      if (state.chatHistory.length > 0) {
+        elements.chatMessages.innerHTML = `
+          <div class="chat-message bot">
+            <p>Hello! 👋 Welcome back! Here's our previous conversation:</p>
+          </div>
+        `;
+        
+        // Load history messages (limit to last 10 exchanges for UI)
+        const recentHistory = state.chatHistory.slice(-10);
+        recentHistory.forEach(msg => {
+          const type = msg.role === 'user' ? 'user' : 'bot';
+          addChatMessage(msg.content, type);
+        });
+      } else {
+        // Initial greeting
+        elements.chatMessages.innerHTML = `
+          <div class="chat-message bot">
+            <p>Hello! 👋 Welcome to NoraClouds! How can I help you today?</p>
+          </div>
+        `;
+      }
+    }
+    
+    function toggleChat() {
+      elements.chatBox.classList.toggle('active');
+    }
+    
+    async function sendAIMessage(userMessage) {
+      // Show typing indicator
+      showTypingIndicator();
+      
+      try {
+        // Send message to local backend with history and system prompt
+        const response = await fetch(API_CONFIG.url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            message: userMessage,
+            history: state.chatHistory,
+            systemInstruction: SYSTEM_PROMPT
+          })
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.error || `Server error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        
+        if (!data.success || !data.response) {
+          throw new Error('Invalid response from server');
+        }
+
+        const aiReply = data.response;
+        
+        // Add to history
+        state.chatHistory.push({ role: 'user', content: userMessage });
+        state.chatHistory.push({ role: 'assistant', content: aiReply });
+        saveChatHistory();
+    
+        // Display response
+        addChatMessage(aiReply, 'bot');
+        showToast('NoraBot is here to help! 🤖', 'success');
+    
+      } catch (error) {
+        hideTypingIndicator();
+        console.error("🔥 CHAT ERROR:", error);
+        addChatMessage(`⚠️ Oops! I'm having trouble connecting right now. Please make sure the server is running (\`node server.js\`). Error: ${error.message}`, 'bot');
+      }
+    }
+    
+    function handleChatSubmit(e) {
+      e.preventDefault();
+      const input = e.target.querySelector('input');
+      const message = input.value.trim();
+      
+      if (!message) return;
+      
+      // Add user message
+      addChatMessage(message, 'user');
+      input.value = '';
+      input.disabled = true;
+      
+      // Send to AI
+      sendAIMessage(message);
+      
+      // Re-enable input after brief delay
+      setTimeout(() => {
+        input.disabled = false;
+        input.focus();
+      }, 500);
+    }
+    
+    function addChatMessage(message, type) {
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `chat-message ${type}`;
+      messageDiv.innerHTML = `<p>${message.replace(/\n/g, '<br>')}</p>`;
+      elements.chatMessages.appendChild(messageDiv);
+      elements.chatMessages.scrollTop = elements.chatMessages.scrollHeight;
+    }
+    
+    function showTypingIndicator() {
+      const typingDiv = document.createElement('div');
+      typingDiv.id = 'typing-indicator';
+      typingDiv.className = 'chat-message bot';
+      typingDiv.innerHTML = `
+        <div class="typing-dots">
+          <span></span><span></span><span></span>
+        </div>
+        <p>NoraBot is typing<span class="cursor">_</span></p>
+      `;
+      elements.chatMessages.appendChild(typingDiv);
+      elements.chatMessages.scrollTop = elements.chatMessages.scrollHeight;
+    }
+    
+    function hideTypingIndicator() {
+      const typing = document.getElementById('typing-indicator');
+      if (typing) typing.remove();
+    }
 
 // ================================================
 // Toast Notifications
