@@ -39,7 +39,7 @@ app.post('/api/chat', async (req, res) => {
 
     // Create chat session with history
     const chat = ai.chats.create({
-     model: 'gemini-1.5-flash',
+     model: 'gemini-2.0-flash-lite',
       history: formattedHistory,
       config: {
         systemInstruction: systemInstruction || 'You are NoraBot, a helpful shopping assistant.'
