@@ -9,7 +9,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Get API key from environment variable
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY || 'AIzaSyBm02JpFRrZqR2rlJSdfEs3IA59-8zvK0I';
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
 // Initialize Gemini client
 const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
